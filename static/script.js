@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Smooth Scroll & Highlight Logic
   document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
       e.preventDefault();
       const targetId = this.getAttribute('href')?.substring(1);
 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
           targetElement.classList.add('highlight');
           setTimeout(() => {
             if (targetElement) { // Verifica se o elemento ainda existe
-                targetElement.classList.remove('highlight');
+              targetElement.classList.remove('highlight');
             }
           }, 1000);
         } else {
@@ -79,25 +79,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Animação específica para o título do banner se desejar
     if (document.querySelector('.banner-title')) {
-        gsap.from(".banner-title", { opacity: 0, y: -30, duration: 1, delay: 0.3 });
+      gsap.from(".banner-title", { opacity: 0, y: -30, duration: 1, delay: 0.3 });
     }
     if (document.querySelector('.banner-subtitle')) {
-        gsap.from(".banner-subtitle", { opacity: 0, y: -30, duration: 1, delay: 0.5 });
+      gsap.from(".banner-subtitle", { opacity: 0, y: -30, duration: 1, delay: 0.5 });
     }
-     if (document.querySelector('.banner-location')) {
-        gsap.from(".banner-location", { opacity: 0, y: -30, duration: 1, delay: 0.7 });
+    if (document.querySelector('.banner-location')) {
+      gsap.from(".banner-location", { opacity: 0, y: -30, duration: 1, delay: 0.7 });
     }
-     if (document.querySelector('#datas-importantes')) {
-        gsap.from("#datas-importantes .date-card", {
-            opacity: 0,
-            y: 30,
-            duration: 0.5,
-            stagger: 0.2, // Anima os cards em sequência
-            scrollTrigger: {
-                trigger: "#datas-importantes",
-                start: "top 80%"
-            }
-        });
+    if (document.querySelector('#datas-importantes')) {
+      gsap.from("#datas-importantes .date-card", {
+        opacity: 0,
+        y: 30,
+        duration: 0.5,
+        stagger: 0.2, // Anima os cards em sequência
+        scrollTrigger: {
+          trigger: "#datas-importantes",
+          start: "top 80%"
+        }
+      });
     }
 
 
@@ -146,41 +146,11 @@ window.addEventListener("DOMContentLoaded", () => {
   }, 5000); // 5 segundos
 });
 
-//fade out mensagem flash
-document.addEventListener('DOMContentLoaded', function () {
-  const flashMessages = document.querySelectorAll('.flash-message');
-  flashMessages.forEach(msg => {
-    setTimeout(() => {
-      msg.style.opacity = '0';
-      setTimeout(() => {
-        msg.remove();  // Remove do DOM após desaparecer
-      }, 1000); // Tempo para completar a transição
-    }, 5000); // Espera 5 segundos antes de começar a desaparecer
-  });
-});
-
-
-//envia mensagem e exibe o flash sem carregar
-document.getElementById("contato-form").addEventListener("submit", async function(event) {
-  event.preventDefault(); // impede envio tradicional
-
-  const form = event.target;
-  const formData = new FormData(form);
-
-  const response = await fetch("/enviar_mensagem", {
-    method: "POST",
-    body: formData
-  });
-
-  const result = await response.json();
-  mostrarMensagem(result.mensagem, result.categoria);
-  form.reset(); // limpa o formulário, se desejar
-});
 
 function mostrarMensagem(texto, categoria) {
   const container = document.getElementById("flash-container");
   container.innerHTML = `<div class="flash-message flash-${categoria}">${texto}</div>`;
-  
+
   setTimeout(() => {
     container.innerHTML = "";
   }, 5000);
@@ -219,3 +189,40 @@ document.addEventListener('DOMContentLoaded', () => {
   showSlide(slideIndex);
   iniciarAutoSlide();
 });
+
+(function () {
+      emailjs.init("EhIEsv1BJvjTf5ocW");
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("contato-form");
+      const botao = document.getElementById("btn-enviar");
+
+      if (form) {
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Feedback visual de envio
+          botao.disabled = true;
+          botao.innerHTML = '<i class="fas fa-spinner fa-spin form-icon"></i> Enviando...';
+
+          emailjs.sendForm("service_5azv62w", "template_qkojfib", this)
+            .then(() => {
+              botao.innerHTML = '<i class="fas fa-check form-icon"></i> Enviado!';
+              botao.classList.add("sucesso");
+              alert("Mensagem enviada com sucesso!");
+
+              setTimeout(() => {
+                botao.disabled = false;
+                botao.innerHTML = '<i class="fas fa-paper-plane form-icon"></i> Enviar';
+                botao.classList.remove("sucesso");
+                form.reset();
+              }, 4000);
+            }, (err) => {
+              botao.disabled = false;
+              botao.innerHTML = '<i class="fas fa-paper-plane form-icon"></i> Enviar';
+              alert("Erro ao enviar: " + JSON.stringify(err));
+            });
+        });
+      }
+    });

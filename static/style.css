@@ -62,7 +62,7 @@ html {
   --text-color-hover: #f8f8ff;
   --hd-color: #1f6389;
   --day-bg: #333;
-  --logo: url("/static/images/codec-white.png");
+  --logo: url("../static/images/codec-white.png");
   --section-bg: #222;
   /* Fundo de sessão um pouco mais claro que day-bg */
   --theme-color: yellow;
@@ -82,7 +82,7 @@ html {
   --bg-color-hover: #1f6389;
   --text-color-hover: #f8f8ff;
   --hd-color: #1f6389;
-  --logo: url("/static/images/codec.png");
+  --logo: url("../static/images/codec.png");
   --day-bg: #e0e0e0;
   /* Um cinza claro para day-bg */
   --section-bg: #ffffff;
@@ -285,7 +285,6 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  margin: 0;
   font-family: sans-serif;
 }
 
@@ -1064,6 +1063,12 @@ footer p{
     align-items: center;
     justify-content: center;
   }
+
+  #btn-enviar.sucesso {
+  background-color: #28a745; /* verde */
+  color: white;
+  border: none;
+}
 
 
   /* Highlight para scroll suave */
